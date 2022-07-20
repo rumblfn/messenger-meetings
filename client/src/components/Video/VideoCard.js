@@ -6,6 +6,7 @@ const VideoCard = (props) => {
 
   useEffect(() => {
     peer.on('stream', (stream) => {
+      console.log(stream)
       ref.current.srcObject = stream;
     });
     peer.on('track', (track, stream) => {

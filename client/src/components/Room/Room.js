@@ -5,10 +5,10 @@ import socket from '../../socket';
 import VideoCard from '../Video/VideoCard';
 import BottomBar from '../BottomBar/BottomBar';
 import Chat from '../Chat/Chat';
+import { VStack } from "@chakra-ui/react";
 import { useParams } from 'react-router-dom';
-import { Spacer, VStack } from "@chakra-ui/react";
 
-const Room = () => {
+const Room = ({currentUser: username, roomId: roomIdS}) => {
   const [peers, setPeers] = useState([]);
   const [userVideoAudio, setUserVideoAudio] = useState({
     localUser: { video: true, audio: true },
@@ -21,7 +21,10 @@ const Room = () => {
   const userVideoRef = useRef();
   const screenTrackRef = useRef();
   const userStream = useRef();
-  const {roomId, username: currentUser} = useParams();
+  const secondaryRoomId = useParams().roomId
+  const secondaryUsername = useParams().username
+  const roomId = roomIdS || secondaryRoomId
+  const currentUser = username || secondaryUsername
 
   useEffect(() => {
     navigator.mediaDevices.enumerateDevices().then((devices) => {

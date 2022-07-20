@@ -34,7 +34,7 @@ const Chat = ({ display, roomId }) => {
   };
 
   return (
-    <ChatContainer display={display}>
+    <ChatContainer display={display ? '0' : '-30%'}>
       <VStack h="100vh" p="0rem 1rem">
       <TopHeader>Group Chat Room</TopHeader>
       <ChatArea>
@@ -77,7 +77,7 @@ const ChatContainer = styled.div`
   hieght: 100vh;
   transition: all 0.22s ease;
   position: absolute;
-  right: ${props => props.display ? "0" : "-30%"};
+  right: ${props => props.display};
   border-left: 1px solid gray;
   background-color: white;
   z-index: 3;
