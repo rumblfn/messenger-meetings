@@ -7,6 +7,7 @@ import BottomBar from '../BottomBar/BottomBar';
 import Chat from '../Chat/Chat';
 import { VStack } from "@chakra-ui/react";
 import { useParams } from 'react-router-dom';
+import {MenuBar} from "../Menu";
 
 const Room = ({currentUser: username, roomId: roomIdS}) => {
   const [peers, setPeers] = useState([]);
@@ -342,6 +343,7 @@ const Room = ({currentUser: username, roomId: roomIdS}) => {
   return (
     <RoomContainer onClick={clickBackground}>
       <VStack w="100%" h="100vh">
+        <MenuBar />
         <VideoContainer>
           <VideoBox
             className={`width-peer${peers.length > 8 ? '' : peers.length}`}

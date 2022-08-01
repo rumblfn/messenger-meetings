@@ -1,0 +1,8 @@
+.avatar-image {
+    width: 66px;
+    height: 66px;
+    cursor: pointer;
+    object-fit: cover;
+    clip-path: circle();
+    transition: filter 0.22s;
+}

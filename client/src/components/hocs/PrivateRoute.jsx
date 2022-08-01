@@ -11,11 +11,7 @@ const PrivateRoute = (props) => {
     return <Room currentUser={user.username} roomId={roomId} />;
   }
 
-  if (user.loggedIn === false) {
-    window.open(`${process.env.REACT_APP_MAIN_URL}`, "_blank");
-  }
-
-  return null;
+  return <h4>Trying to login</h4>;
 };
 
 export default PrivateRoute;
