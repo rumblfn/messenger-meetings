@@ -12,7 +12,7 @@ import {MenuBar} from "../Menu";
 const Room = ({currentUser: username, roomId: roomIdS}) => {
   const [peers, setPeers] = useState([]);
   const [userVideoAudio, setUserVideoAudio] = useState({
-    localUser: { video: true, audio: true },
+    localUser: { video: false, audio: true, headphones: true },
   });
   const [videoDevices, setVideoDevices] = useState([]);
   const [displayChat, setDisplayChat] = useState(true);
@@ -119,15 +119,22 @@ const Room = ({currentUser: username, roomId: roomIdS}) => {
       const peerIdx = findPeer(userId);
 
       setUserVideoAudio((preList) => {
-        let video = preList[peerIdx.userName].video;
-        let audio = preList[peerIdx.userName].audio;
+        let {video, audio, headphones} = preList[peerIdx.userName];
 
         if (switchTarget === 'video') video = !video;
-        else audio = !audio;
+        else if (switchTarget === 'audio') audio = !audio;
+        else if (switchTarget === 'headphones') {
+          if (headphones) {
+            headphones = false
+            audio = false
+          } else {
+            headphones = true
+          }
+        }
 
         return {
           ...preList,
-          [peerIdx.userName]: { video, audio },
+          [peerIdx.userName]: { video, audio, headphones },
         };
       });
     });
@@ -217,31 +224,35 @@ const Room = ({currentUser: username, roomId: roomIdS}) => {
     window.location.href = '/';
   };
 
-  const toggleCameraAudio = (e) => {
-    const target = e.target.getAttribute('data-switch');
-
+  const toggleCameraAudio = (e, target) => {
     setUserVideoAudio((preList) => {
-      let videoSwitch = preList['localUser'].video;
-      let audioSwitch = preList['localUser'].audio;
+      let {headphones, video, audio} = preList['localUser'];
 
       if (target === 'video') {
         const userVideoTrack = userVideoRef.current.srcObject.getVideoTracks()[0];
-        videoSwitch = !videoSwitch;
-        userVideoTrack.enabled = videoSwitch;
-      } else {
+        video = !video;
+        userVideoTrack.enabled = video;
+      } else if (target === 'audio') {
         const userAudioTrack = userVideoRef.current.srcObject.getAudioTracks()[0];
-        audioSwitch = !audioSwitch;
+        audio = !audio;
 
         if (userAudioTrack) {
-          userAudioTrack.enabled = audioSwitch;
+          userAudioTrack.enabled = audio;
         } else {
-          userStream.current.getAudioTracks()[0].enabled = audioSwitch;
+          userStream.current.getAudioTracks()[0].enabled = audio;
+        }
+      } else if (target === 'headphones') {
+        if (headphones) {
+          headphones = false
+          audio = false
+        } else {
+          headphones = true
         }
       }
 
       return {
         ...preList,
-        localUser: { video: videoSwitch, audio: audioSwitch },
+        localUser: { video, audio, headphones },
       };
     });
 

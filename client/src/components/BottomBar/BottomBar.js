@@ -1,14 +1,13 @@
 import { Button, HStack } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
-import styled from 'styled-components';
 import {
-  faComments,
-  faDesktop,
-  faMicrophone,
-  faMicrophoneSlash,
-  faPhoneSlash,
-  faVideo,
-  faVideoSlash,
+    faComments,
+    faDesktop, faHeadphones, faHeadphonesAlt,
+    faMicrophone,
+    faMicrophoneSlash,
+    faPhoneSlash,
+    faVideo,
+    faVideoSlash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -34,25 +33,25 @@ const BottomBar = ({
   return (
     <HStack pt={2} pb={6}>
       <Button
-        onClick={toggleCameraAudio}
-        data-switch="video"
+        onClick={e => toggleCameraAudio(e, 'video')}
         color={!userVideoAudio.video && "red.500"}
         p={0}
       >
-        <FontAwesomeIcon
-          data-switch="video"
-          icon={userVideoAudio.video ? faVideo : faVideoSlash}
-        />
+          <FontAwesomeIcon icon={userVideoAudio.video ? faVideo : faVideoSlash}/>
       </Button>
+      {/*<Button*/}
+      {/*  onClick={e => toggleCameraAudio(e, "headphones")}*/}
+      {/*  color={!userVideoAudio.headphones && "red.500"}*/}
+      {/*  p={0}*/}
+      {/*>*/}
+      {/*  <FontAwesomeIcon icon={userVideoAudio.headphones ? faHeadphones : faHeadphonesAlt}/>*/}
+      {/*</Button>*/}
       <Button
-        onClick={toggleCameraAudio}
-        data-switch="audio"
+        onClick={e => toggleCameraAudio(e, "audio")}
         color={!userVideoAudio.audio && "red.500"}
         p={0}
       >
-        <FontAwesomeIcon
-          icon={userVideoAudio.audio ? faMicrophone : faMicrophoneSlash}
-        />
+        <FontAwesomeIcon icon={userVideoAudio.audio ? faMicrophone : faMicrophoneSlash}/>
       </Button>
       <Button
         color={screenShare && "red.500"}
