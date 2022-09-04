@@ -54,7 +54,7 @@ io.on('connection', (socket) => {
   socket.on('BE-join-room', ({ roomId, userName }) => {
     // Socket Join RoomName
     socket.join(roomId);
-    socketList[socket.id] = { userName, video: true, audio: true };
+    socketList[socket.id] = { userName, video: false, audio: true, headphones: true };
 
     // Set User List
     io.sockets.in(roomId).clients((err, clients) => {
@@ -102,8 +102,16 @@ io.on('connection', (socket) => {
   socket.on('BE-toggle-camera-audio', ({ roomId, switchTarget }) => {
     if (switchTarget === 'video') {
       socketList[socket.id].video = !socketList[socket.id].video;
-    } else {
+    } else if (switchTarget === 'audio') {
       socketList[socket.id].audio = !socketList[socket.id].audio;
+    } else if (switchTarget === 'headphones') {
+      let headphones = socketList[socket.id].headphones
+      if (headphones) {
+        socketList[socket.id].headphones = false;
+        socketList[socket.id].audio = false;
+      } else {
+        socketList[socket.id].headphones = true;
+      }
     }
     socket.broadcast
       .to(roomId)
